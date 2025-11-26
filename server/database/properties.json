@@ -1,0 +1,6 @@
+[
+  { "id": 101, "title": "คอนโดริมน้ำ", "location": "กรุงเทพฯ", "price": "7.5M", "image": "condo-river" },
+  { "id": 102, "title": "บ้านเดี่ยวสวนสวย", "location": "เชียงใหม่", "price": "12.0M", "image": "house-garden" },
+  { "id": 103, "title": "ทาวน์โฮมทันสมัย", "location": "ปทุมธานี", "price": "3.2M", "image": "townhome-modern" },
+  { "id": 104, "title": "ที่ดินหัวมุมวิวภูเขา", "location": "เขาใหญ่", "price": "15.0M", "image": "land-mountain" }
+]
