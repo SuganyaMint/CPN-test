@@ -1,0 +1,34 @@
+[
+  {
+    "user_id": 1,
+    "username": "john_doe",
+    "favorites": [
+      101,
+      103
+    ]
+  },
+  {
+    "user_id": 2,
+    "username": "Top",
+    "favorites": [
+      103,
+      104,
+      105,
+      102
+    ]
+  },
+  {
+    "user_id": 3,
+    "username": "Near",
+    "favorites": [
+      101
+    ]
+  },
+  {
+    "user_id": 4,
+    "username": "ddd",
+    "favorites": [
+      102
+    ]
+  }
+]

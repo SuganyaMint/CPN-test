@@ -11,11 +11,14 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger_output.json");
 
 // routes
+const favoritesRoutes = require("./src/routes/favorites.routes");
 const propertiesRoutes = require("./src/routes/properties.routes");
+const userRoutes = require("./src/routes/user.routes");
 
 
-
+app.use("/api/v1/favorites", favoritesRoutes);
 app.use("/api/v1/properties", propertiesRoutes);
+app.use("/api/v1/users", userRoutes);
 
 // Rate Limit
 // const limiter = rateLimit({

@@ -1,240 +1,152 @@
-import React, { useState, useEffect } from "react";
-import { Card, Col, Row } from "antd";
-import { ApiRouter } from "../utils/ApiRouter";
-import API from "../utils/ApiUrl";
-import logo from "../assets/logo-venine.png";
-import { DatePicker } from "antd";
-import moment from "moment";
-import dayjs from "dayjs";
+import React, { useEffect, useState, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { properties } from "../redux/actions/PropertyAction";
+import { alluser_id } from "../redux/actions/UserAction";
 
-function HomePage() {
-  const [allData, setAllData] = useState([]); //ทั้งหมด
-  const [staus1, setStatus1] = useState([]); //รอการตรวจสอบ
-  const [staus2, setStatus2] = useState([]); //กำลังดำเนินการ
-  const [staus3, setStatus3] = useState([]); // เสร็จสิ้นการดำเนินการ
-  const [staus4, setStatus4] = useState([]); // เสร็จสิ้นการดำเนินการ
+import { UserIcon } from "@heroicons/react/24/outline";
+import UserModal from "../components/UserModal.jsx"; // ⭐ นำเข้า UserModal
+import PropertyCard from "../components/PropertyCard.jsx";
 
-  const thisYear = new Date().getFullYear();
-  let thisMonth = new Date().getMonth() + 1;
-  if (thisMonth < 10) {
-    thisMonth = `0${thisMonth}`;
-  }
-  const defaultMonth = `${thisYear}-${thisMonth}`;
+export default function HomePage() {
+  const dispatch = useDispatch();
+  const propertiesState = useSelector((state) => state.properties);
+  const propertiesData = propertiesState.properties;
+  const isLoading = propertiesState.isFetching;
+  const [loading, setLoading] = useState(true);
 
-  const monthFormat = "YYYY-MM";
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const userNow = localStorage.getItem("user_now");
+  console.log("userNow in HomePage:", userNow);
 
+  const currentUserID = userNow || "Guest";
+  const user_detail = useSelector((state) => state.user.user_id);
+  const favorites_user =
+    user_detail && user_detail.favorites ? user_detail.favorites : [];
+  console.log("favorites_user in HomePage:", favorites_user);
   useEffect(() => {
-    const fechData = async () => {
-      const res = await API.get(ApiRouter.statusLength + "/" + defaultMonth);
-      let getData = res.data.data;
-      setAllData(getData.all);
-      setStatus1(getData.status1);
-      setStatus2(getData.status2);
-      setStatus3(getData.status3);
-      setStatus4(getData.status4);
-    };
-    fechData();
-  }, []);
-  const handleChange = async (date, dateString) => {
-    const res = await API.get(ApiRouter.statusLength + "/" + dateString);
-    let getData = res.data.data;
-    setAllData(getData.all);
-    setStatus1(getData.status1);
-    setStatus2(getData.status2);
-    setStatus3(getData.status3);
-    setStatus4(getData.status4);
-  };
+    const fetchUserData = async () => {
+      setLoading(false);
+      await dispatch(properties());
 
+      // ⭐ เรียก API ดึง User Detail ใหม่ทุกครั้งที่ userNow เปลี่ยน
+      await dispatch(alluser_id(userNow));
+      setLoading(true);
+    };
+
+    fetchUserData();
+  }, [dispatch, userNow]);
+  const filteredProperties = useMemo(() => {
+    if (!searchTerm) {
+      return propertiesData;
+    }
+    const lowercasedTerm = searchTerm.toLowerCase();
+    return propertiesData.filter(
+      (property) =>
+        property.title.toLowerCase().includes(lowercasedTerm) ||
+        property.location.toLowerCase().includes(lowercasedTerm)
+    );
+  }, [searchTerm, propertiesData]);
+
+  if (isLoading || !propertiesData) {
+    // เพิ่มเช็ค propertiesData เผื่อยังไม่มีข้อมูล
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-stone-100">
+        <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p className="text-xl font-light text-stone-700">
+          กำลังโหลดอสังหาริมทรัพย์...
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <div
-        style={{
-          //กึ่งกลาง
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-        }}
-      >
-        <img
-          style={{
-            width: "100px",
-            height: "auto",
-          }}
-          src={logo}
-        />
-        <p
-          style={{
-            fontSize: "30px",
-            fontWeight: "bold",
-            textAlign: "center",
-            marginTop: "20px",
-            marginBottom: "20px",
-          }}
-        >
-          รายงานสรุปคำร้องข้อร้องเรียน
-        </p>
-        <DatePicker
-          defaultValue={dayjs(defaultMonth, monthFormat)}
-          format={monthFormat}
-          picker="month"
-          onChange={handleChange}
-          style={{ marginBottom: "20px" }}
-        />
-        <div className="stats shadow mb-6">
-          <div className="stat">
-            <div className="stat-figure text-secondary">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                className="inline-block w-8 h-8 stroke-current"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                ></path>
-              </svg>
+    <div className="min-h-screen bg-stone-100 font-sans">
+      <header className="bg-white shadow-sm p-6 mb-8 sticky top-0 z-10 border-b border-stone-200">
+        <div className="max-w-6xl mx-auto flex justify-between items-center">
+          <h1 className="text-3xl font-light text-amber-800 tracking-widest">
+            **MINIMAL ESTATE**
+          </h1>
+          <nav className="hidden md:flex space-x-6 text-stone-600 items-center">
+            {/* ⭐ เพิ่ม items-center ที่นี่ */}
+            <a href="#" className="hover:text-amber-800 transition">
+              หน้าหลัก
+            </a>
+            <a href="#" className="hover:text-amber-800 transition">
+              อสังหาฯ ทั้งหมด
+            </a>
+            <a href="#" className="hover:text-amber-800 transition">
+              ติดต่อเรา
+            </a>
+            <div
+              className="flex items-center space-x-2 cursor-pointer p-2 rounded-full hover:bg-stone-100 transition"
+              onClick={() => setIsModalOpen(true)} // ⭐ เมื่อคลิก ให้เปิด Modal
+            >
+              <UserIcon className="w-6 h-6 text-stone-600 hover:text-amber-800" />
+              <span className="text-sm font-medium text-amber-800">
+                {currentUserID}
+              </span>
             </div>
-            <div className="stat-title">ทั้งหมด</div>
-            <div className="stat-value">{allData}</div>
+          </nav>
+        </div>
+      </header>
+      <main className="max-w-6xl mx-auto px-4 pb-12">
+        <section className="mb-10 p-6 bg-white rounded-lg shadow-lg">
+          <h2 className="text-2xl font-light text-stone-700 mb-4 font-prompt">
+            ค้นหาอสังหาริมทรัพย์ของคุณ 🔍
+          </h2>
+          <input
+            type="text"
+            placeholder="ค้นหาตามชื่อหรือสถานที่ (เช่น กรุงเทพฯ, บ้านเดี่ยว)"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full p-3 border border-stone-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 transition duration-150 text-stone-700"
+          />
+        </section>
+        <hr className="border-stone-200 mb-8" />
+        {loading == true ? (
+          <section>
+            <h2 className="text-3xl font-light text-stone-800 mb-8">
+              {searchTerm
+                ? `ผลการค้นหาสำหรับ "${searchTerm}"`
+                : "รายการอสังหาริมทรัพย์แนะนำ"}
+            </h2>
+            {filteredProperties.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredProperties.map((property) => (
+                  <PropertyCard
+                    key={property.id}
+                    property={property}
+                    userNow={userNow}
+                    favorites_user={favorites_user}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-10 bg-white rounded-lg shadow-lg">
+                <p className="text-xl text-stone-500">
+                  ไม่พบอสังหาริมทรัพย์ที่ตรงกับคำค้นหา **"
+                  {searchTerm}"**
+                </p>
+              </div>
+            )}
+          </section>
+        ) : (
+          <div className="flex flex-col items-center justify-center min-h-screen bg-stone-100">
+            <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+            <p className="text-xl font-light text-stone-700">
+              กำลังโหลดอสังหาริมทรัพย์...
+            </p>
           </div>
-
-          <div className="stat">
-            <div className="stat-figure text-secondary">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                className="inline-block w-8 h-8 stroke-current"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-                ></path>
-              </svg>
-            </div>
-            <div className="stat-title">สำเร็จ</div>
-
-            <div className="stat-value " style={{ color: "#1EB530" }}>
-              {staus4}
-            </div>
-          </div>
-
-          <div className="stat">
-            <div className="stat-figure text-secondary">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                className="inline-block w-8 h-8 stroke-current"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
-                ></path>
-              </svg>
-            </div>
-            <div className="stat-title">เข้าสู่ระบบ</div>
-            <div className="stat-value" style={{ color: "#FFB233" }}>
-              {allData - staus4}
-            </div>
-          </div>
-        </div>{" "}
-      </div>
-      <div></div>
-      <Row gutter={16}>
-        <Col span={6}>
-          <Card
-            title="รอการตรวจสอบ"
-            bordered={false}
-            style={{ textAlign: "center" }}
-          >
-            <p
-              style={{
-                fontSize: "30px",
-                fontWeight: "bold",
-                textAlign: "center",
-                marginTop: "5px",
-                marginBottom: "5px",
-                //สีแดง
-                color: "#FF3838",
-              }}
-            >
-              {staus1}
-            </p>
-          </Card>
-        </Col>
-        <Col span={6}>
-          <Card
-            title="กำลังดำเนินการ"
-            bordered={false}
-            style={{ textAlign: "center" }}
-          >
-            <p
-              style={{
-                fontSize: "30px",
-                fontWeight: "bold",
-                textAlign: "center",
-                marginTop: "5px",
-                marginBottom: "5px",
-                color: "#FFB233",
-              }}
-            >
-              {staus2}
-            </p>
-          </Card>
-        </Col>
-        <Col span={6}>
-          <Card
-            title="ไม่อนุมัติคำร้อง"
-            bordered={false}
-            style={{ textAlign: "center" }}
-          >
-            <p
-              style={{
-                fontSize: "30px",
-                fontWeight: "bold",
-                textAlign: "center",
-                marginTop: "5px",
-                marginBottom: "5px",
-                color: "#FF3838",
-              }}
-            >
-              {staus3}
-            </p>
-          </Card>
-        </Col>
-        <Col span={6}>
-          <Card
-            title="เสร็จสิ้นการดำเนินการ (close job)"
-            bordered={false}
-            style={{ textAlign: "center" }}
-          >
-            <p
-              style={{
-                fontSize: "30px",
-                fontWeight: "bold",
-                textAlign: "center",
-                marginTop: "5px",
-                marginBottom: "5px",
-                color: "#1EB530",
-              }}
-            >
-              {staus4}
-            </p>
-          </Card>
-        </Col>
-      </Row>
-    </>
+        )}
+      </main>
+      <footer className="bg-stone-200 py-6 mt-12">
+        <div className="max-w-6xl mx-auto text-center text-stone-600 text-sm">
+          &copy; 2025 Minimal Estate. All rights reserved. |
+          ออกแบบด้วยความมินิมอล
+        </div>
+      </footer>
+      <UserModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </div>
   );
 }
-
-export default HomePage;

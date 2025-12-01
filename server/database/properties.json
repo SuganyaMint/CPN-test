@@ -1,6 +1,75 @@
 [
-  { "id": 101, "title": "คอนโดริมน้ำ", "location": "กรุงเทพฯ", "price": "7.5M", "image": "condo-river" },
-  { "id": 102, "title": "บ้านเดี่ยวสวนสวย", "location": "เชียงใหม่", "price": "12.0M", "image": "house-garden" },
-  { "id": 103, "title": "ทาวน์โฮมทันสมัย", "location": "ปทุมธานี", "price": "3.2M", "image": "townhome-modern" },
-  { "id": 104, "title": "ที่ดินหัวมุมวิวภูเขา", "location": "เขาใหญ่", "price": "15.0M", "image": "land-mountain" }
+  { 
+    "id": 101, 
+    "title": "คอนโดริมน้ำ The Aqua", 
+    "location": "กรุงเทพฯ", 
+    "price": "7.5M", 
+    "image": "https://cdn-cms.pgimgs.com/news/2019/07/Politan-Rive-Overview-e1563123349908.jpg",
+    "description": "ห้องสวย วิวแม่น้ำเจ้าพระยาแบบพาโนรามา เดินทางสะดวก ใกล้ BTS",
+    "isFavorite": true
+  },
+  { 
+    "id": 102, 
+    "title": "บ้านเดี่ยวสวนสวย Lanna Home", 
+    "location": "เชียงใหม่", 
+    "price": "12.0M", 
+    "image": "https://ihome108.com/wp-content/uploads/2023/04/910f7c5f-4578-4aa8-ab6a-44ba3b060b3c-1024x683.jpg",
+    "description": "บ้านสไตล์ล้านนา มีพื้นที่สวนกว้างขวาง อากาศบริสุทธิ์ ใกล้ตัวเมือง"
+  },
+  { 
+    "id": 103, 
+    "title": "ทาวน์โฮมทันสมัย Smart Living", 
+    "location": "ปทุมธานี", 
+    "price": "3.2M", 
+    "image": "https://www.apthai.com/images/production/QBajwS5WeOv9K6yTHjPDqvXxMsyuexDHs67J1JyT.png",
+    "description": "ทาวน์โฮม 2 ชั้น ดีไซน์มินิมอล ทำเลดีติดถนนใหญ่ ใกล้รถไฟฟ้า"
+  },
+  { 
+    "id": 104, 
+    "title": "บ้านวิวภูเขา Serenity Hill", 
+    "location": "เขาใหญ่", 
+    "price": "15.0M", 
+    "image": "https://img.kapook.com/u/pree/d/q1_18.jpg",
+    "description": "บ้านพักตากอากาศบนเนินเขา บรรยากาศเงียบสงบ เหมาะกับการพักผ่อน"
+  },
+  { 
+    "id": 105, 
+    "title": "คอนโดใจกลางเมือง", 
+    "location": "กรุงเทพฯ", 
+    "price": "4.5M", 
+    "image": "https://asset.pf.co.th/project-location/thumbnail/bbaf472f4671eb81.jpg",
+    "description": "ห้องสตูดิโอพร้อมอยู่ ใกล้แหล่งช้อปปิ้งและออฟฟิศ เดินทางสะดวกมาก"
+  },
+  { 
+    "id": 106, 
+    "title": "วิลล่าริมหาด Phuket Wave", 
+    "location": "ภูเก็ต", 
+    "price": "35.0M", 
+    "image": "https://villa-the-wave-2.hotelinsamui.com/data/Photos/OriginalPhoto/12523/1252386/1252386517.JPEG",
+    "description": "วิลล่าส่วนตัวติดทะเล พร้อมสระว่ายน้ำอินฟินิตี้ เหมาะสำหรับลงทุน"
+  },
+  { 
+    "id": 107, 
+    "title": "บ้านสวนสไตล์คันทรี", 
+    "location": "นครราชสีมา", 
+    "price": "6.0M", 
+    "image": "https://s.isanook.com/wo/0/ud/45/228313/228313-20221224080744-714362f.jpg?ip/resize/w728/q80/jpg",
+    "description": "บ้านเดี่ยวชั้นเดียวในบรรยากาศธรรมชาติ พร้อมสวนผลไม้รอบบ้าน"
+  },
+  { 
+    "id": 108, 
+    "title": "อพาร์ตเมนต์ให้เช่า", 
+    "location": "พัทยา", 
+    "price": "1.8M", 
+    "image": "https://bcdn.renthub.in.th/listing_picture/202002/20200212/3Vu71nyByhUGozyhbUbq.jpg?class=lthumbnail",
+    "description": "ห้องขนาดเล็ก สำหรับนักลงทุนที่ต้องการรายได้จากค่าเช่ารายเดือน"
+  },
+  { 
+    "id": 109, 
+    "title": "บ้านไม้สไตล์ญี่ปุ่น", 
+    "location": "อยุธยา", 
+    "price": "5.5M", 
+    "image": "https://www.naibann.com/wp-content/uploads/2018/01/japanese-wood-family-house-minimal-3.jpg",
+    "description": "บ้านเดี่ยวชั้นเดียวใช้วัสดุไม้ ดีไซน์แบบมูจิ ใกล้แหล่งท่องเที่ยวทางประวัติศาสตร์"
+  }
 ]

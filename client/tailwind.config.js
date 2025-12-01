@@ -1,54 +1,50 @@
+// /** @type {import('tailwindcss').Config} */
+// export default {
+//   content: [
+//     "./index.html",
+//     "./src/**/*.{js,ts,jsx,tsx}",
+//   ],
+//   theme: {
+//     extend: {
+//       fontFamily: {
+//         thai: ['Noto Sans Thai', 'sans-serif'],
+//         thai2: ['Sarabun', 'sans-serif'],
+//         thai3: ['Kanit', 'sans-serif'],
+//         thai4: ['Mitr', 'sans-serif'],
+//         thai5: ['Pridi', 'serif'],
+//         thai6: ['Chakra Petch', 'sans-serif'],
+//         thai7: ['IBM Plex Sans Thai', 'sans-serif'],
+
+//       },
+//       colors: {
+//         colorsV1: '#E4E0E1',
+//         colorsV2: '#1ce3f0',
+//         colorsV3: '#0097b2',
+//         colorsV4: '#155f6c', 
+//         errortext: '#fd5c5c',
+//         successtext: '#3fa769',
+//         inprocesstext: '#eabf11'
+
+//       },
+//     },
+//   },
+//   plugins: [],
+// }
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./index.html",
-    "./src/**/**/**/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{js,jsx,ts,tsx}",
   ],
-  darkMode: 'class', // or false
   theme: {
     extend: {
-      colors: {
-        gray: {
-          50: '#f8f7ff',
-          100: '#f6f5ff',
-          200: '#eff0fe',
-          300: '#e0e0fc',
-          400: '#98A5C0',
-          500: '#84848f',
-          600: '#595983',
-          700: '#1e1f48',
-          800: '#0f103b',
-          900: '#000000'
-        },
-      }
-    },
-    fontFamily: {
-      sans: ['Nunito', 'sans-serif'],
-      serif: ['Merriweather', 'serif'],
-    },
-  },
-  variants: {
-    extend: {
-      backgroundOpacity: ['dark']
-    }
-  },
-  plugins: [require('daisyui')],
-  daisyui: {
-    themes: [
-      {
-        mytheme: {
-          "primary": "#FFA500",
-          "secondary": "#FFA500",
-          "accent": "#FFA500",
-          "neutral": "#3D4451",
-          "base-100": "#FFFFFF",
-          "info": "#1D2D47",
-          "success": "#009485",
-          "warning": "#FFA500", // Set the warning color to orange
-          "error": "#ff5724",
-        },
+      fontFamily: {
+        // ⭐ เพิ่มฟอนต์ Prompt สำหรับใช้ทั้งเว็บ
+        prompt: ['Prompt', 'sans-serif'],
+        // ถ้าอยากให้หัวข้อเป็น Prompt และเนื้อหาเป็น Sarabun:
+        // sarabun: ['Sarabun', 'sans-serif'], 
       },
-    ],
+    },
   },
-
+  plugins: [],
 }
