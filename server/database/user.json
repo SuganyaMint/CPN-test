@@ -13,21 +13,28 @@
     "favorites": [
       103,
       104,
-      105,
-      102
+      105
     ]
   },
   {
     "user_id": 3,
     "username": "Near",
     "favorites": [
-      101
+      102
     ]
   },
   {
     "user_id": 4,
     "username": "ddd",
     "favorites": [
+      102
+    ]
+  },
+  {
+    "user_id": 5,
+    "username": "MINT",
+    "favorites": [
+      101,
       102
     ]
   }

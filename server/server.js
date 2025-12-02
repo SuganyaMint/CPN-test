@@ -3,7 +3,7 @@ const cors = require("cors");
 const app = express();
 const PORT = 3000;
 
-app.use(cors()); // อนุญาตให้ Frontend เข้าถึงได้
+app.use(cors()); 
 app.use(express.json());
 
 // Swagger
@@ -20,13 +20,7 @@ app.use("/api/v1/favorites", favoritesRoutes);
 app.use("/api/v1/properties", propertiesRoutes);
 app.use("/api/v1/users", userRoutes);
 
-// Rate Limit
-// const limiter = rateLimit({
-//   windowMs: 15 * 60 * 1000, // 15 นาที
-//   max: 100, // จำกัด request ได้ 100 ครั้ง ต่อ 15 นาทีต่อ IP
-// });
-// 
-// app.use(limiter);
+
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

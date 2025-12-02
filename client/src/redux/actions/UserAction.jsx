@@ -1,7 +1,5 @@
 import ApiUrl from "../../service/ApiUrl";
-import { ApiRouter, apiKey } from "../../service/ApiRouter";
-// ApiUrl.defaults.withCredentials = true;
-// ApiUrl.defaults.headers.common["x-api-key"] = apiKey;
+import { ApiRouter } from "../../service/ApiRouter";
 
 export const ActionTypes = {
   GET_FAVORITES: "GET_FAVORITES",

@@ -1,12 +1,10 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-// import MainLayout from "../components/layouts/MainLayout";
 import HomePage from "../pages/HomePage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    // element: <MainLayout />,
     children: [
       {
         path: "/",
@@ -24,17 +22,6 @@ const router = createBrowserRouter([
     ],
   },
   
-//   {
-//     path: "active",
-//     element: <MainLayout />,
-//     children: [
-//       {
-//         path: "",
-//         element: <ActivePage />,
-//       },
-//     ],
-//   },
- 
 ]);
 
 export default function AppRouter() {

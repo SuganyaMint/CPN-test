@@ -6,7 +6,6 @@ const initialState = {
 };
 
 export const PropertyReducers = (state = initialState, action) => {
-  // console.log("Action received in PropertyReducers:", action);
   switch (action.type) {
     case ActionTypes.GET_PROPERTIES:
       return { ...state, properties: action.payload };

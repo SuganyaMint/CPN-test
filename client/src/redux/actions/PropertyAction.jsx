@@ -1,7 +1,6 @@
 import ApiUrl from "../../service/ApiUrl";
-import { ApiRouter, apiKey } from "../../service/ApiRouter";
-// ApiUrl.defaults.withCredentials = true;
-// ApiUrl.defaults.headers.common["x-api-key"] = apiKey;
+import { ApiRouter } from "../../service/ApiRouter";
+
 
 export const ActionTypes = {
   GET_PROPERTIES: "GET_PROPERTIES",
@@ -26,7 +25,7 @@ export const properties = () => async (dispatch) => {
 };
 
 
-export const addToFavorites = (username, property_id) => async (dispatch) => {
+export const addToFavorites = (username, property_id) => async () => {
   try {
     console.log("Adding to favorites...");
     const res = await ApiUrl.post(ApiRouter.favorites.add, { username, property_id });
@@ -40,7 +39,7 @@ export const addToFavorites = (username, property_id) => async (dispatch) => {
     console.log(error);
   }
 };
-export const removeFromFavorites = (username, property_id) => async (dispatch) => {
+export const removeFromFavorites = (username, property_id) => async () => {
   try {
     console.log("Removing from favorites...");
     const res = await ApiUrl.post(ApiRouter.favorites.remove, { username, property_id });

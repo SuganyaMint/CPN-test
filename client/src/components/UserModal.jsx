@@ -23,7 +23,6 @@ export default function UserModal({ isOpen, onClose }) {
       if (res && (res.status == 201 || res.status == 200)) {
         localStorage.setItem("user_now", cleanInputID);
 
-        // ⭐ ACTION 1: ดึงรายละเอียด User (ซึ่งจะอัปเดต Redux state.user.user_id)
         await dispatch(alluser_id(cleanInputID));
 
         Swal.fire({
@@ -62,11 +61,8 @@ export default function UserModal({ isOpen, onClose }) {
   };
 
   return (
-    // Backdrop
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      {/* Modal Container */}
       <div className="bg-white rounded-lg shadow-2xl w-full max-w-md p-6 font-prompt">
-        {/* Header */}
         <div className="flex justify-between items-center border-b pb-3 mb-4">
           <h2 className="text-2xl font-semibold text-stone-800">
             จัดการบัญชีผู้ใช้
@@ -79,7 +75,6 @@ export default function UserModal({ isOpen, onClose }) {
           </button>
         </div>
 
-        {/* Current Status */}
         <div className="flex items-center justify-between w-full mb-4">
           <p className="text-md text-stone-600 mb-0">
             ผู้ใช้งานปัจจุบัน:
@@ -97,7 +92,6 @@ export default function UserModal({ isOpen, onClose }) {
           </div>
         </div>
 
-        {/* Input Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label

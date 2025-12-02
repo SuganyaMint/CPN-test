@@ -1,10 +1,8 @@
-import React, { useEffect, useState, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, {  useState } from "react";
+import { useDispatch } from "react-redux";
 import { addToFavorites ,removeFromFavorites} from "../redux/actions/PropertyAction";
-import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid"; // หัวใจทึบ
+import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid"; 
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/24/outline";
-import { UserIcon } from "@heroicons/react/24/outline";
-import UserModal from "../components/UserModal.jsx"; // ⭐ นำเข้า UserModal
 import Swal from "sweetalert2";
 
 export default function PropertyCard({
@@ -14,8 +12,6 @@ export default function PropertyCard({
   favorites_user
 }) {
   const dispatch = useDispatch();
-  // const userNow = localStorage.getItem("user_now");
-  // const user_detail = useSelector((state) => state.user.user_id);
 
   const [favorites, setFavorites] = useState(favorites_user || []);
 
@@ -23,13 +19,9 @@ export default function PropertyCard({
     const result = await dispatch(addToFavorites(username, property_id));
 
     if (result && result.status) {
-      // อัปเดตสถานะ favorites หลังจากเพิ่มสำเร็จ
 
-      // ⭐ การแก้ไข: ใช้ prevFavorites || [] เพื่อให้แน่ใจว่าเป็น Array ว่างถ้าค่าเดิมเป็น null/undefined
       setFavorites((prevFavorites) => {
-        const safeFavorites = prevFavorites || []; // กำหนดให้เป็น Array ว่างถ้า prevFavorites เป็น null/undefined
-
-        // ตรวจสอบเพื่อป้องกันการเพิ่มซ้ำ (Optional แต่แนะนำ)
+        const safeFavorites = prevFavorites || []; 
         if (safeFavorites.includes(property_id)) {
           console.warn(`Property ID ${property_id} is already in favorites.`);
           return safeFavorites;
@@ -44,7 +36,6 @@ export default function PropertyCard({
         text: 'กรุณา Login ก่อนเพิ่มรายการโปรด',
       });
     }
-    console.log("Add to favorites result:", result);
   };
 
   const removeFavorites = async (username, property_id) => {
@@ -54,7 +45,6 @@ export default function PropertyCard({
         prevFavorites.filter((id) => id !== property_id)
       );
     }
-    console.log("Remove from favorites result:", result);
   };
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden transition duration-300 ease-in-out transform hover:scale-[1.02] border border-gray-100">
@@ -67,32 +57,24 @@ export default function PropertyCard({
             loading="lazy"
           />
 
-          {/* ⭐ ปุ่ม/สถานะรายการโปรด (วางซ้อนทับรูปภาพ) */}
           <button
             className="absolute top-3 right-3 p-2 rounded-full bg-white/70 backdrop-blur-sm shadow-md transition duration-150 hover:bg-white"
-            // onClick={() => addFavorites(userNow, property.id)}
             onClick={() => {
               if (favorites && favorites.includes(property.id)) {
-                // หากเป็นรายการโปรดอยู่แล้ว ให้ลบออก
                 removeFavorites(userNow, property.id);
               } else {
-                // หากยังไม่เป็นรายการโปรด ให้เพิ่มเข้าไป
                 addFavorites(userNow, property.id);
               }
             }}
             aria-label="Toggle Favorite"
           >
             {property && favorites ? (
-              // หาก property และ favorites มีค่า
               favorites.includes(property.id) ? (
-                // เป็นรายการโปรด (หัวใจทึบ)
                 <SolidHeartIcon className="h-6 w-6 text-amber-600" />
               ) : (
-                // ยังไม่เป็นรายการโปรด (หัวใจโปร่ง)
                 <OutlineHeartIcon className="h-6 w-6 text-amber-600" />
               )
             ) : (
-              // หาก property หรือ favorites ยังไม่โหลด หรือเป็น null/undefined
               <OutlineHeartIcon className="h-6 w-6 text-amber-600" />
             )}
           </button>

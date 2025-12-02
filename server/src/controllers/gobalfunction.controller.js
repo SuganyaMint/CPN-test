@@ -6,13 +6,11 @@ const FAVORITES_PATH = path.join(__dirname, '../../database/favorites.json');
 const USER_PATH = path.join(__dirname, '../../database/user.json');
 
 
-// --- Utility Functions สำหรับ File-based Storage ---
 const readJsonFile = (filePath) => {
     try {
         const data = fs.readFileSync(filePath, 'utf8');
         return JSON.parse(data);
     } catch (error) {
-        // หากไฟล์ไม่มีอยู่หรืออ่านไม่ได้ ให้คืนค่าเริ่มต้น
         return filePath === FAVORITES_PATH ? {} : [];
     }
 };
@@ -24,7 +22,6 @@ const writeJsonFile = (filePath, data) => {
 
 exports.getProperties = async () => {
     try {
-        // const properties = readJsonFile(PROPERTIES_PATH);
         const data = fs.readFileSync(PROPERTIES_PATH, 'utf8');
         return JSON.parse(data);
     } catch (error) {
@@ -34,13 +31,12 @@ exports.getProperties = async () => {
 };
 
 exports.getFavorites = async (user_name) => {
-    // 1. ตรวจสอบความถูกต้องของ ID ก่อน
     if (!user_name) {
         return { status: false, message: "User ID is required." };
     }
     try {
         const data = fs.readFileSync(FAVORITES_PATH, 'utf8');
-        const favorites = JSON.parse(data); // favorites คือ Array ของข้อมูลที่ถูกบันทึกเป็นรายการโปรด
+        const favorites = JSON.parse(data); 
         const foundFavorites = favorites.find(fav => fav.username === user_name);
         return foundFavorites
     } catch (error) {
@@ -65,13 +61,11 @@ exports.getUserByUserName = async (user_name) => {
     }
     try {
         const data = fs.readFileSync(USER_PATH, 'utf8');
-        const users = JSON.parse(data); // users คือ Array ของข้อมูลผู้ใช้
+        const users = JSON.parse(data); 
         const foundUser = users.find(user => user.username === user_name);
         return foundUser
     } catch (error) {
-        // จัดการกรณีที่ไฟล์ไม่มีอยู่, อ่านไม่ได้, หรือ JSON ผิดรูปแบบ
         if (error.code === 'ENOENT') {
-            // 'ENOENT' = Error NO ENTry (File not found)
             return { status: false, message: "User data file not found." };
         }
 
@@ -80,7 +74,6 @@ exports.getUserByUserName = async (user_name) => {
     }
 };
 
-//create user
 exports.createUser = async (username) => {
     try {
         const data = fs.readFileSync(USER_PATH, 'utf8');
@@ -100,31 +93,21 @@ exports.createUser = async (username) => {
 
 
 exports.addFavorite = async (user_name, property_id) => {
-    // 1. ตรวจสอบความถูกต้องของ Input
     if (!user_name || !property_id) {
         return { status: false, message: "Username and Property ID are required." };
     }
-    const propId = Number(property_id); // แปลง property_id ให้เป็นตัวเลข
+    const propId = Number(property_id); 
     const cleanUsername = user_name.trim();
 
     try {
-        // --- 1. อ่านข้อมูล Users ทั้งหมด ---
-        // สมมติว่า 'this.readJsonFile' ดึง Array ข้อมูลผู้ใช้จาก USER_PATH
-        const users = readJsonFile(USER_PATH); 
 
-        // --- 2. ค้นหา User ที่ต้องการ ---
-        // ใช้ findIndex เพื่อหา Index ของ User ที่ตรงกับ username
+        const users = readJsonFile(USER_PATH); 
         const userIndex = users.findIndex(user => user.username === cleanUsername);
 
         if (userIndex === -1) {
             return { status: false, message: `User '${cleanUsername}' not found.` };
         }
-
         const user = users[userIndex];
-        
-        // --- 3. ตรวจสอบและเพิ่มรายการโปรด ---
-        
-        // 3.1 ตรวจสอบว่า Property ID นั้นเป็นรายการโปรดอยู่แล้วหรือไม่
         if (user.favorites.includes(propId)) {
             return { 
                 status: true, 
@@ -133,14 +116,10 @@ exports.addFavorite = async (user_name, property_id) => {
             };
         }
 
-        // 3.2 เพิ่ม Property ID เข้าไปใน Array favorites
         user.favorites.push(propId);
         
-        // 3.3 อัปเดต Array Users หลัก
         users[userIndex] = user; 
-        
-        // --- 4. บันทึกข้อมูลกลับเข้าไปในไฟล์ ---
-        // สมมติว่า 'this.writeJsonFile' ใช้บันทึก Array users กลับไปที่ USER_PATH
+
         writeJsonFile(USER_PATH, users);
 
         return { 
@@ -156,18 +135,14 @@ exports.addFavorite = async (user_name, property_id) => {
 };
 
 exports.removeFavorite = async (user_name, property_id) => {
-    // 1. ตรวจสอบความถูกต้องของ Input
     if (!user_name || !property_id) {   
         return { status: false, message: "Username and Property ID are required." };
     }
-    const propId = Number(property_id); // แปลง property_id ให้เป็นตัวเลข
+    const propId = Number(property_id);
     const cleanUsername = user_name.trim();
 
     try {
-        // --- 1. อ่านข้อมูล Users ทั้งหมด ---
         const users = readJsonFile(USER_PATH); 
-
-        // --- 2. ค้นหา User ที่ต้องการ ---
         const userIndex = users.findIndex(user => user.username === cleanUsername);
 
         if (userIndex === -1) {
@@ -175,10 +150,7 @@ exports.removeFavorite = async (user_name, property_id) => {
         }
 
         const user = users[userIndex];
-        
-        // --- 3. ตรวจสอบและลบรายการโปรด ---
-        
-        // 3.1 ตรวจสอบว่า Property ID นั้นอยู่ในรายการโปรดหรือไม่
+ 
         if (!user.favorites.includes(propId)) {
             return { 
                 status: false, 
@@ -187,13 +159,10 @@ exports.removeFavorite = async (user_name, property_id) => {
             };
         }
 
-        // 3.2 ลบ Property ID ออกจาก Array favorites
         user.favorites = user.favorites.filter(id => id !== propId);
         
-        // 3.3 อัปเดต Array Users หลัก
         users[userIndex] = user; 
         
-        // --- 4. บันทึกข้อมูลกลับเข้าไปในไฟล์ ---
         writeJsonFile(USER_PATH, users);
 
         return { 
